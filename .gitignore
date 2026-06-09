@@ -1,0 +1,8 @@
+.wrangler/
+.env
+.env.*
+node_modules/
+npm-debug.log*
+dist/
+*.tmp
+*.bak

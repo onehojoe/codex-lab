@@ -1,0 +1,393 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Codex Lab | 실행 가능한 테스트 허브</title>
+  <meta name="description" content="로컬 Codex 실험을 GitHub와 Cloudflare Pages로 배포하기 위한 정적 테스트 허브">
+  <style>
+    :root {
+      --ink: #182024;
+      --muted: #607079;
+      --paper: #fbfcf8;
+      --surface: #ffffff;
+      --line: #d8ded6;
+      --teal: #0f766e;
+      --teal-soft: #dff3ef;
+      --amber: #c98205;
+      --amber-soft: #fff1cc;
+      --blue: #255c99;
+      --blue-soft: #e3eefb;
+      --shadow: 0 16px 40px rgba(24, 32, 36, .08);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      color: var(--ink);
+      background: var(--paper);
+      font-family: "Segoe UI", "Malgun Gothic", Arial, sans-serif;
+      line-height: 1.55;
+    }
+
+    a {
+      color: inherit;
+    }
+
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 14px clamp(18px, 4vw, 56px);
+      border-bottom: 1px solid var(--line);
+      background: rgba(251, 252, 248, .94);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      min-width: 0;
+      font-weight: 900;
+      text-decoration: none;
+    }
+
+    .mark {
+      display: grid;
+      place-items: center;
+      width: 34px;
+      height: 34px;
+      border: 2px solid var(--ink);
+      background: var(--amber-soft);
+    }
+
+    .nav {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    .nav a {
+      min-height: 34px;
+      padding: 7px 10px;
+      border: 1px solid transparent;
+      border-radius: 6px;
+      color: var(--muted);
+      font-size: 14px;
+      font-weight: 800;
+      text-decoration: none;
+    }
+
+    .nav a:hover {
+      border-color: var(--line);
+      background: var(--surface);
+      color: var(--ink);
+    }
+
+    main {
+      padding: 34px clamp(18px, 4vw, 56px) 56px;
+    }
+
+    .hero,
+    .section {
+      max-width: 1180px;
+      margin: 0 auto;
+    }
+
+    .hero {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(300px, .48fr);
+      gap: 28px;
+      align-items: end;
+      margin-bottom: 36px;
+      padding-bottom: 26px;
+      border-bottom: 2px solid var(--ink);
+    }
+
+    .eyebrow {
+      margin: 0 0 8px;
+      color: var(--teal);
+      font-size: 14px;
+      font-weight: 900;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(34px, 6vw, 68px);
+      line-height: 1.02;
+      letter-spacing: 0;
+    }
+
+    .lede {
+      margin: 18px 0 0;
+      max-width: 68ch;
+      color: #314149;
+      font-size: 18px;
+    }
+
+    .deploy-card {
+      padding: 18px;
+      border: 1px solid #b9d7d2;
+      border-left: 6px solid var(--teal);
+      border-radius: 8px;
+      background: var(--teal-soft);
+    }
+
+    .deploy-card strong {
+      display: block;
+      margin-bottom: 6px;
+      font-size: 18px;
+    }
+
+    .section {
+      margin-bottom: 38px;
+    }
+
+    .section-head {
+      display: flex;
+      align-items: end;
+      justify-content: space-between;
+      gap: 18px;
+      margin-bottom: 14px;
+    }
+
+    h2 {
+      margin: 0;
+      font-size: 24px;
+    }
+
+    .section-head p {
+      max-width: 58ch;
+      margin: 0;
+      color: var(--muted);
+      text-align: right;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .card {
+      min-width: 0;
+      padding: 18px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--surface);
+      box-shadow: 0 8px 20px rgba(24, 32, 36, .04);
+    }
+
+    .tag {
+      display: inline-flex;
+      margin-bottom: 10px;
+      padding: 4px 8px;
+      border-radius: 6px;
+      color: var(--teal);
+      background: var(--teal-soft);
+      font-size: 12px;
+      font-weight: 900;
+    }
+
+    .tag.report {
+      color: var(--blue);
+      background: var(--blue-soft);
+    }
+
+    .tag.blog {
+      color: #7b4a00;
+      background: var(--amber-soft);
+    }
+
+    .card h3 {
+      margin: 0 0 8px;
+      font-size: 19px;
+    }
+
+    .card p {
+      margin: 0;
+      color: #34454c;
+    }
+
+    .launch {
+      display: inline-flex;
+      align-items: center;
+      min-height: 38px;
+      margin-top: 16px;
+      padding: 8px 12px;
+      border: 1px solid var(--ink);
+      border-radius: 6px;
+      background: var(--ink);
+      color: #ffffff;
+      font-size: 14px;
+      font-weight: 900;
+      text-decoration: none;
+    }
+
+    .launch:hover {
+      background: var(--blue);
+      border-color: var(--blue);
+    }
+
+    .steps {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 12px;
+      counter-reset: step;
+    }
+
+    .step {
+      position: relative;
+      min-width: 0;
+      padding: 44px 14px 16px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--surface);
+      counter-increment: step;
+    }
+
+    .step::before {
+      content: counter(step);
+      position: absolute;
+      top: 14px;
+      left: 14px;
+      display: grid;
+      place-items: center;
+      width: 25px;
+      height: 25px;
+      border: 2px solid var(--ink);
+      border-radius: 50%;
+      background: var(--amber-soft);
+      font-size: 13px;
+      font-weight: 900;
+    }
+
+    .step h3 {
+      margin: 0 0 8px;
+      font-size: 17px;
+    }
+
+    .step p {
+      margin: 0;
+      color: #3d4d55;
+      font-size: 14px;
+    }
+
+    @media (max-width: 900px) {
+      .hero,
+      .grid,
+      .steps {
+        grid-template-columns: 1fr;
+      }
+
+      .section-head {
+        display: block;
+      }
+
+      .section-head p {
+        margin-top: 8px;
+        text-align: left;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .topbar {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .nav {
+        justify-content: flex-start;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="./" aria-label="Codex Lab 홈">
+      <span class="mark">CL</span>
+      <span>Codex Lab</span>
+    </a>
+    <nav class="nav" aria-label="주요 섹션">
+      <a href="#labs">실험</a>
+      <a href="#reports">분석</a>
+      <a href="#deploy">배포</a>
+      <a href="blog/blogger-link-snippet.html">블로그 연결</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div>
+        <p class="eyebrow">GitHub + Cloudflare Pages Ready</p>
+        <h1>실행 가능한 테스트 허브</h1>
+        <p class="lede">로컬에서 만든 Codex 실험을 웹에서 실행하거나 결과 리포트로 연결하는 정적 사이트입니다. GitHub 저장소로 올린 뒤 Cloudflare Pages에 연결하면 자동 배포됩니다.</p>
+      </div>
+      <div class="deploy-card">
+        <strong>현재 포함된 첫 테스트</strong>
+        Realtime Geometry Pathfinding은 브라우저 캔버스, HTML, CSS, JavaScript만으로 동작하므로 Cloudflare Pages에서 직접 실행 가능한 유형입니다.
+      </div>
+    </section>
+
+    <section class="section" id="labs">
+      <div class="section-head">
+        <h2>실행 실험</h2>
+        <p>브라우저에서 바로 동작하는 정적 프로토타입입니다.</p>
+      </div>
+      <div class="grid">
+        <article class="card">
+          <span class="tag">Canvas Lab</span>
+          <h3>Realtime Geometry Pathfinding</h3>
+          <p>시작점, 도착점, 장애물을 캔버스에 배치하고 최단 도로선과 대안 패턴을 실시간으로 확인합니다.</p>
+          <a class="launch" href="labs/realtime-geometry-pathfinding/">실험 실행</a>
+        </article>
+      </div>
+    </section>
+
+    <section class="section" id="reports">
+      <div class="section-head">
+        <h2>분석 리포트</h2>
+        <p>영상 분석, 검증 기록, 비웹 실행 결과를 웹에 전시하는 영역입니다.</p>
+      </div>
+      <div class="grid">
+        <article class="card">
+          <span class="tag report">Video Analysis</span>
+          <h3>바이브 코딩 수익화 분석</h3>
+          <p>YouTube 영상의 핵심 주장, 실행 순서, 리스크를 정리한 분석 페이지입니다.</p>
+          <a class="launch" href="reports/vibe-coding-video-analysis/">리포트 보기</a>
+        </article>
+      </div>
+    </section>
+
+    <section class="section" id="deploy">
+      <div class="section-head">
+        <h2>배포 흐름</h2>
+        <p>이 폴더 하나를 GitHub 저장소와 Cloudflare Pages 프로젝트의 기준 루트로 사용합니다.</p>
+      </div>
+      <div class="steps">
+        <article class="step">
+          <h3>Git 저장소</h3>
+          <p>`codex-lab` 폴더를 GitHub 저장소로 올립니다.</p>
+        </article>
+        <article class="step">
+          <h3>Pages 연결</h3>
+          <p>Cloudflare Pages에서 GitHub 저장소를 선택하고 빌드 없이 루트를 배포합니다.</p>
+        </article>
+        <article class="step">
+          <h3>블로그 링크</h3>
+          <p>Blogger 글, 메뉴, 버튼에서 Pages URL로 연결합니다.</p>
+        </article>
+        <article class="step">
+          <h3>실험 추가</h3>
+          <p>새 실험을 폴더로 추가하고 루트 페이지에 링크를 붙인 뒤 push합니다.</p>
+        </article>
+      </div>
+    </section>
+  </main>
+</body>
+</html>
