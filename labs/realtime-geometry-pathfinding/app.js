@@ -300,16 +300,16 @@ function updateStatus() {
     const rejectedCount = state.pattern.rejectedCount || 0;
     statusText.textContent =
       alternativeCount > 0
-        ? `${alternativeCount} clear alternative${alternativeCount === 1 ? "" : "s"} ready${rejectedCount ? ` · ${rejectedCount} rejected` : ""}`
+        ? `${alternativeCount} clear alternative${alternativeCount === 1 ? "" : "s"} ready${rejectedCount ? ` - ${rejectedCount} rejected` : ""}`
         : "No clear alternatives found";
   } else if (createdCount > 0) {
     statusText.textContent = `${createdCount} committed alternative${createdCount === 1 ? "" : "s"}`;
   } else if (state.mode === "obstacle") {
-    statusText.textContent = `Drawing ${obstacleLabel(state.obstacleShape)} obstacles · ${obstacleCount}`;
+    statusText.textContent = `Drawing ${obstacleLabel(state.obstacleShape)} obstacles - ${obstacleCount}`;
   } else if (state.mode === "start") {
-    statusText.textContent = `Adding start points · Start ${startCount} / End ${endCount}`;
+    statusText.textContent = `Adding start points - Start ${startCount} / End ${endCount}`;
   } else {
-    statusText.textContent = `Adding end points · Start ${startCount} / End ${endCount}`;
+    statusText.textContent = `Adding end points - Start ${startCount} / End ${endCount}`;
   }
 
   runButton.disabled = !(startCount > 0 && endCount > 0);
