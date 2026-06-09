@@ -1,5 +1,9 @@
 # Codex Lab
 
+Public site: https://onehojoe.github.io/codex-lab/
+
+Direct lab: https://onehojoe.github.io/codex-lab/labs/realtime-geometry-pathfinding/
+
 로컬 Codex 실험을 GitHub와 Cloudflare Pages로 배포하기 위한 정적 테스트 허브입니다.
 
 ## 포함된 첫 산출물
