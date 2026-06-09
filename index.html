@@ -110,7 +110,7 @@
       padding: clamp(36px, 7vw, 78px) clamp(18px, 4vw, 56px);
       background:
         linear-gradient(90deg, rgba(23, 33, 38, .92), rgba(23, 33, 38, .58) 52%, rgba(23, 33, 38, .18)),
-        url("labs/realtime-geometry-pathfinding/polished-preview.png") center / cover no-repeat;
+        url("labs/realtime-geometry-pathfinding/polished-preview.png?v=hero-20260525") center / cover no-repeat;
       color: #ffffff;
     }
 
@@ -243,7 +243,7 @@
 
     .visual-grid {
       display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
+      grid-template-columns: 1fr;
       gap: 12px;
     }
 
@@ -395,7 +395,7 @@
         <p>A small, focused prototype for testing route generation around obstacles.</p>
       </div>
       <article class="card">
-        <img src="labs/realtime-geometry-pathfinding/polished-preview.png" alt="Pathfinding automation preview with a route around obstacles">
+        <img src="labs/realtime-geometry-pathfinding/polished-preview.png?v=hero-20260525" alt="Pathfinding automation preview with multiple routes around obstacles">
         <div class="card-body">
           <span class="tag">Canvas Automation</span>
           <h3>Pathfinding Automation</h3>
@@ -426,12 +426,8 @@
         </div>
         <div class="visual-grid" aria-label="Experiment preview images">
           <figure class="visual">
-            <img src="labs/realtime-geometry-pathfinding/polished-preview.png" alt="Generated path around multiple obstacles">
-            <figcaption>Obstacle-aware route generation</figcaption>
-          </figure>
-          <figure class="visual">
-            <img src="labs/realtime-geometry-pathfinding/alternative-preview.png" alt="Alternative routes shown in several colors">
-            <figcaption>Alternative route comparison</figcaption>
+            <img src="labs/realtime-geometry-pathfinding/polished-preview.png?v=hero-20260525" alt="Generated route network around multiple obstacles">
+            <figcaption>Representative route network with start nodes, end nodes, obstacles, and alternative traces</figcaption>
           </figure>
         </div>
       </div>
