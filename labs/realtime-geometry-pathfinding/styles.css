@@ -1,13 +1,13 @@
 :root {
   color-scheme: light;
-  --bg: #f5f1ea;
-  --surface: #fffaf2;
+  --bg: #eef3f2;
+  --surface: #ffffff;
   --ink: #211f1d;
   --muted: #716b64;
-  --line: #d9d0c4;
+  --line: #cfd9d7;
   --grid: rgba(33, 31, 29, 0.07);
-  --panel: rgba(255, 250, 242, 0.92);
-  --control: #ede6dc;
+  --panel: rgba(255, 255, 255, 0.94);
+  --control: #e6eceb;
   --start: #0f9b8e;
   --end: #e35b4f;
   --route: #2f6df6;
@@ -22,7 +22,7 @@
 body {
   margin: 0;
   min-height: 100vh;
-  background: #f2eee7;
+  background: var(--bg);
   color: var(--ink);
   font-family:
     Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
@@ -37,7 +37,7 @@ button {
 
 .app-shell {
   display: grid;
-  grid-template-rows: auto minmax(0, 1fr);
+  grid-template-rows: auto auto minmax(0, 1fr);
   gap: 12px;
   min-height: 100vh;
   padding: 14px;
@@ -55,7 +55,7 @@ button {
   padding: 7px 12px;
   border: 1px solid rgba(33, 31, 29, 0.18);
   border-radius: 6px;
-  background: rgba(255, 250, 242, 0.94);
+  background: rgba(255, 255, 255, 0.94);
   color: var(--ink);
   box-shadow: 0 12px 28px rgba(64, 49, 32, 0.14);
   font-size: 13px;
@@ -66,6 +66,74 @@ button {
 
 .lab-home:hover {
   background: #ffffff;
+}
+
+.lab-brief {
+  display: grid;
+  grid-template-columns: minmax(280px, 0.9fr) minmax(320px, 1.1fr);
+  gap: 12px;
+  align-items: stretch;
+  padding: 14px;
+  border: 1px solid rgba(33, 31, 29, 0.12);
+  border-radius: 8px;
+  background: var(--panel);
+  box-shadow: var(--shadow);
+}
+
+.brief-copy {
+  align-self: center;
+  max-width: 760px;
+  padding: 6px;
+}
+
+.brief-kicker {
+  margin: 0 0 6px;
+  color: var(--start);
+  font-size: 12px;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.brief-copy h1 {
+  margin: 0;
+  font-size: clamp(26px, 4vw, 44px);
+  line-height: 1.02;
+  letter-spacing: 0;
+}
+
+.brief-copy p:not(.brief-kicker) {
+  margin-top: 12px;
+  max-width: 68ch;
+  color: var(--muted);
+  font-size: 15px;
+}
+
+.brief-media {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.brief-media figure {
+  overflow: hidden;
+  margin: 0;
+  border: 1px solid rgba(33, 31, 29, 0.12);
+  border-radius: 8px;
+  background: #ffffff;
+}
+
+.brief-media img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  object-fit: cover;
+}
+
+.brief-media figcaption {
+  padding: 8px 10px;
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 850;
 }
 
 .topbar {
@@ -99,16 +167,18 @@ button {
     linear-gradient(90deg, transparent 43%, var(--ink) 44% 56%, transparent 57%),
     linear-gradient(0deg, transparent 43%, var(--ink) 44% 56%, transparent 57%),
     var(--amber);
-  box-shadow: inset 0 0 0 5px rgba(255, 250, 242, 0.9);
+  box-shadow: inset 0 0 0 5px rgba(255, 255, 255, 0.9);
   flex: 0 0 auto;
 }
 
 h1,
+h2,
 p {
   margin: 0;
 }
 
-h1 {
+h1,
+h2 {
   font-size: 17px;
   line-height: 1.1;
   font-weight: 800;
@@ -357,7 +427,7 @@ h1 {
 
 .run-button {
   background: var(--ink);
-  color: #fffaf2;
+  color: #ffffff;
 }
 
 .image-button {
@@ -388,7 +458,7 @@ h1 {
 
 .ghost-button {
   border: 1px solid rgba(33, 31, 29, 0.15);
-  background: rgba(255, 250, 242, 0.72);
+  background: rgba(255, 255, 255, 0.72);
   color: var(--muted);
 }
 
@@ -416,7 +486,7 @@ h1 {
   display: block;
   width: 100%;
   height: 100%;
-  min-height: calc(100vh - 128px);
+  min-height: calc(100vh - 360px);
   cursor: crosshair;
   touch-action: none;
 }
@@ -429,7 +499,7 @@ h1 {
   padding: 12px;
   border: 1px solid rgba(33, 31, 29, 0.12);
   border-radius: 8px;
-  background: rgba(255, 250, 242, 0.9);
+  background: rgba(255, 255, 255, 0.92);
   box-shadow: 0 8px 24px rgba(64, 49, 32, 0.1);
   backdrop-filter: blur(10px);
 }
@@ -469,6 +539,14 @@ h1 {
   .topbar {
     grid-template-columns: 1fr;
     align-items: stretch;
+  }
+
+  .lab-brief {
+    grid-template-columns: 1fr;
+  }
+
+  .brief-media {
+    grid-template-columns: 1fr;
   }
 
   .brand {
@@ -516,7 +594,7 @@ h1 {
   }
 
   #stage {
-    min-height: max(320px, calc(100vh - 310px));
+    min-height: max(340px, calc(100vh - 560px));
   }
 
   .readout {

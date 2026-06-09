@@ -3,23 +3,45 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Realtime Geometry Pathfinding</title>
-    <link rel="stylesheet" href="styles.css?v=alt2" />
+    <title>Automation Lab | Pathfinding Automation</title>
+    <link rel="stylesheet" href="styles.css?v=automation1" />
   </head>
   <body>
     <main class="app-shell">
-      <a class="lab-home" href="../../index.html">테스트 허브</a>
-      <header class="topbar" aria-label="Geometry pathfinding controls">
+      <a class="lab-home" href="../../index.html">Automation Lab</a>
+
+      <section class="lab-brief" aria-labelledby="briefTitle">
+        <div class="brief-copy">
+          <p class="brief-kicker">Automation Experiment 01</p>
+          <h1 id="briefTitle">Pathfinding Automation</h1>
+          <p>
+            시작점, 도착점, 장애물을 캔버스에 배치하면 장애물을 피하는 경로와 여러 대안 패턴을 계산합니다.
+            BIM 공간 계획, 동선 검토, 자동 배선/배관 경로 탐색 같은 아이디어를 웹에서 빠르게 검증하기 위한 실험입니다.
+          </p>
+        </div>
+        <div class="brief-media" aria-label="실험 결과 이미지">
+          <figure>
+            <img src="polished-preview.png" alt="장애물을 피해 계산된 경로 미리보기" />
+            <figcaption>장애물 회피 경로</figcaption>
+          </figure>
+          <figure>
+            <img src="alternative-preview.png" alt="대안 경로가 여러 색상으로 표시된 미리보기" />
+            <figcaption>대안 패턴 비교</figcaption>
+          </figure>
+        </div>
+      </section>
+
+      <header class="topbar" aria-label="경로 찾기 자동화 컨트롤">
         <div class="brand">
           <span class="brand-mark" aria-hidden="true"></span>
           <div>
-            <h1>Geometry Pathfinding</h1>
+            <h2>실행 캔버스</h2>
             <p id="statusText">시작점 추가 중 · 시작 0 / 도착 0</p>
           </div>
         </div>
 
-        <div class="toolbar" role="toolbar" aria-label="Point and run controls">
-          <div class="mode-group" aria-label="Point mode">
+        <div class="toolbar" role="toolbar" aria-label="점 배치와 실행 컨트롤">
+          <div class="mode-group" aria-label="점 배치 모드">
             <button class="mode-button is-active" id="startModeButton" type="button" data-mode="start">
               <span class="dot dot-start" aria-hidden="true"></span>
               시작점
@@ -34,14 +56,14 @@
             </button>
           </div>
 
-          <div class="shape-group" aria-label="Obstacle shape">
+          <div class="shape-group" aria-label="장애물 형태">
             <button class="shape-button is-active" id="circleShapeButton" type="button" data-shape="circle">원</button>
             <button class="shape-button" type="button" data-shape="triangle">삼각</button>
             <button class="shape-button" type="button" data-shape="square">사각</button>
             <button class="shape-button" type="button" data-shape="pentagon">오각</button>
           </div>
 
-          <div class="route-group" aria-label="Route method">
+          <div class="route-group" aria-label="경로 방식">
             <label for="routeModeSelect">선</label>
             <select id="routeModeSelect">
               <option value="shortest-road" selected>최단 도로선</option>
@@ -56,14 +78,14 @@
             </select>
           </div>
 
-          <div class="route-tune" id="routeTunePanel" aria-label="Selected route settings" hidden>
+          <div class="route-tune" id="routeTunePanel" aria-label="선택 경로 설정" hidden>
             <div class="route-picker" id="routePicker"></div>
             <label for="clothoidRadiusSlider">반경</label>
             <input id="clothoidRadiusSlider" type="range" min="40" max="180" value="100" />
             <input id="clothoidRadiusValue" type="number" min="40" max="180" value="100" />
           </div>
 
-          <div class="image-group" aria-label="Image obstacle recognition">
+          <div class="image-group" aria-label="이미지 장애물 인식">
             <button class="image-button" id="imageButton" type="button">이미지</button>
             <label for="thresholdSlider">명도</label>
             <input id="thresholdSlider" type="range" min="0" max="255" value="128" />
@@ -75,7 +97,7 @@
             <input id="imageInput" type="file" accept="image/*" hidden />
           </div>
 
-          <div class="action-group" aria-label="Run controls">
+          <div class="action-group" aria-label="실행 컨트롤">
             <button class="run-button" id="runButton" type="button" disabled>시작</button>
             <button class="pattern-button" id="patternButton" type="button" disabled>대안</button>
             <button class="commit-button" id="commitPatternButton" type="button" disabled>확정</button>
@@ -84,10 +106,10 @@
         </div>
       </header>
 
-      <section class="stage-wrap" aria-label="Pathfinding stage">
-        <canvas id="stage" aria-label="Pathfinding canvas"></canvas>
+      <section class="stage-wrap" aria-label="경로 찾기 실행 영역">
+        <canvas id="stage" aria-label="경로 찾기 캔버스"></canvas>
 
-        <aside class="readout" aria-label="Attempt readout">
+        <aside class="readout" aria-label="실행 결과 요약">
           <dl>
             <div>
               <dt>시도</dt>
