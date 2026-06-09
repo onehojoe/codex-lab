@@ -1,10 +1,10 @@
 <!doctype html>
-<html lang="ko">
+<html lang="en">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Automation Lab | 실행형 자동화 실험</title>
-  <meta name="description" content="로컬에서 만든 자동화 실험, 분석 리포트, 웹 프로토타입을 GitHub Pages와 Cloudflare Pages로 연결하는 실행형 테스트 허브">
+  <title>Automation Lab | Runnable Automation Experiments</title>
+  <meta name="description" content="A focused gallery of runnable automation experiments with visual previews and browser-based prototypes.">
   <style>
     :root {
       --ink: #172126;
@@ -17,8 +17,6 @@
       --amber: #c98205;
       --amber-soft: #fff1cc;
       --blue: #255c99;
-      --blue-soft: #e3eefb;
-      --coral: #c94d3f;
       --shadow: 0 18px 46px rgba(23, 33, 38, .12);
     }
 
@@ -34,7 +32,7 @@
       margin: 0;
       color: var(--ink);
       background: var(--paper);
-      font-family: "Segoe UI", "Malgun Gothic", Arial, sans-serif;
+      font-family: "Segoe UI", Arial, sans-serif;
       line-height: 1.55;
     }
 
@@ -126,6 +124,7 @@
       color: #8de5d9;
       font-size: 14px;
       font-weight: 900;
+      text-transform: uppercase;
     }
 
     h1 {
@@ -149,18 +148,22 @@
       margin-top: 24px;
     }
 
-    .button {
+    .button,
+    .launch {
       display: inline-flex;
       align-items: center;
       justify-content: center;
       min-height: 42px;
       padding: 10px 14px;
-      border: 1px solid rgba(255, 255, 255, .34);
       border-radius: 6px;
-      background: #ffffff;
-      color: var(--ink);
       font-weight: 900;
       text-decoration: none;
+    }
+
+    .button {
+      border: 1px solid rgba(255, 255, 255, .34);
+      background: #ffffff;
+      color: var(--ink);
     }
 
     .button.secondary {
@@ -201,7 +204,7 @@
 
     .explain-grid {
       display: grid;
-      grid-template-columns: minmax(0, .8fr) minmax(320px, 1fr);
+      grid-template-columns: minmax(0, .82fr) minmax(320px, 1fr);
       gap: 18px;
       align-items: stretch;
     }
@@ -214,15 +217,11 @@
       box-shadow: 0 8px 24px rgba(23, 33, 38, .05);
     }
 
-    .explain-copy h3,
-    .card h3,
-    .step h3 {
+    .explain-copy h3 {
       margin: 0 0 8px;
     }
 
-    .explain-copy p,
-    .card p,
-    .step p {
+    .explain-copy p {
       margin: 0;
       color: #34454c;
     }
@@ -248,7 +247,8 @@
       gap: 12px;
     }
 
-    .visual {
+    .visual,
+    .card {
       overflow: hidden;
       min-width: 0;
       border: 1px solid var(--line);
@@ -271,31 +271,22 @@
       font-weight: 800;
     }
 
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 14px;
-    }
-
     .card {
-      min-width: 0;
-      overflow: hidden;
-      border: 1px solid var(--line);
-      border-radius: 8px;
-      background: var(--surface);
+      display: grid;
+      grid-template-columns: minmax(320px, .9fr) minmax(0, 1fr);
       box-shadow: 0 8px 20px rgba(23, 33, 38, .05);
-    }
-
-    .card-body {
-      padding: 18px;
     }
 
     .card img {
       width: 100%;
-      aspect-ratio: 16 / 9;
+      height: 100%;
+      min-height: 280px;
       object-fit: cover;
-      border-bottom: 1px solid var(--line);
       background: #dce3df;
+    }
+
+    .card-body {
+      padding: clamp(20px, 4vw, 34px);
     }
 
     .tag {
@@ -307,26 +298,27 @@
       background: var(--teal-soft);
       font-size: 12px;
       font-weight: 900;
+      text-transform: uppercase;
     }
 
-    .tag.report {
-      color: var(--blue);
-      background: var(--blue-soft);
+    .card h3 {
+      margin: 0 0 10px;
+      font-size: clamp(26px, 4vw, 42px);
+      line-height: 1.05;
+    }
+
+    .card p {
+      margin: 0;
+      color: #34454c;
+      font-size: 17px;
     }
 
     .launch {
-      display: inline-flex;
-      align-items: center;
-      min-height: 38px;
-      margin-top: 16px;
-      padding: 8px 12px;
+      margin-top: 18px;
       border: 1px solid var(--ink);
-      border-radius: 6px;
       background: var(--ink);
       color: #ffffff;
       font-size: 14px;
-      font-weight: 900;
-      text-decoration: none;
     }
 
     .launch:hover {
@@ -334,43 +326,9 @@
       border-color: var(--blue);
     }
 
-    .steps {
-      display: grid;
-      grid-template-columns: repeat(4, minmax(0, 1fr));
-      gap: 12px;
-      counter-reset: step;
-    }
-
-    .step {
-      position: relative;
-      min-width: 0;
-      padding: 44px 14px 16px;
-      border: 1px solid var(--line);
-      border-radius: 8px;
-      background: var(--surface);
-      counter-increment: step;
-    }
-
-    .step::before {
-      content: counter(step);
-      position: absolute;
-      top: 14px;
-      left: 14px;
-      display: grid;
-      place-items: center;
-      width: 25px;
-      height: 25px;
-      border: 2px solid var(--ink);
-      border-radius: 50%;
-      background: var(--amber-soft);
-      font-size: 13px;
-      font-weight: 900;
-    }
-
     @media (max-width: 900px) {
       .explain-grid,
-      .grid,
-      .steps {
+      .card {
         grid-template-columns: 1fr;
       }
 
@@ -407,123 +365,75 @@
 </head>
 <body>
   <header class="topbar">
-    <a class="brand" href="./" aria-label="Automation Lab 홈">
+    <a class="brand" href="./" aria-label="Automation Lab home">
       <span class="mark">AL</span>
       <span>Automation Lab</span>
     </a>
-    <nav class="nav" aria-label="주요 섹션">
-      <a href="#about">설명</a>
-      <a href="#labs">실험</a>
-      <a href="#reports">분석</a>
-      <a href="#deploy">배포</a>
-      <a href="blog/blogger-link-snippet.html">블로그 연결</a>
+    <nav class="nav" aria-label="Main navigation">
+      <a href="#experiment">Experiment</a>
     </nav>
   </header>
 
   <section class="hero" aria-labelledby="heroTitle">
     <div class="hero-copy">
-      <p class="eyebrow">자동화 실험실</p>
+      <p class="eyebrow">Runnable prototype</p>
       <h1 id="heroTitle">Automation Lab</h1>
       <p class="lede">
-        자동화 아이디어를 웹에서 직접 실행하고, 결과 이미지와 분석 리포트까지 한 곳에서 확인하는 공개 실험 공간입니다.
+        A focused space for browser-based automation experiments. Each page should explain the idea, show the result visually, and let the viewer run the prototype immediately.
       </p>
       <div class="hero-actions">
-        <a class="button" href="labs/realtime-geometry-pathfinding/">첫 실험 실행</a>
-        <a class="button secondary" href="#about">페이지 설명 보기</a>
+        <a class="button" href="labs/realtime-geometry-pathfinding/">Run the experiment</a>
+        <a class="button secondary" href="#experiment">View details</a>
       </div>
     </div>
   </section>
 
   <main>
-    <section class="section" id="about">
+    <section class="section" id="experiment">
       <div class="section-head">
-        <h2>무엇을 올리는 페이지인가</h2>
-        <p>작은 프로토타입을 블로그 글의 첨부 링크로 끝내지 않고, 실제로 눌러 보고 검증할 수 있는 실행형 기록으로 남깁니다.</p>
+        <h2>Current Experiment</h2>
+        <p>A small, focused prototype for testing route generation around obstacles.</p>
+      </div>
+      <article class="card">
+        <img src="labs/realtime-geometry-pathfinding/polished-preview.png" alt="Pathfinding automation preview with a route around obstacles">
+        <div class="card-body">
+          <span class="tag">Canvas Automation</span>
+          <h3>Pathfinding Automation</h3>
+          <p>
+            Place start points, end points, and obstacles on a canvas. The prototype calculates clear routes and alternative path patterns in real time.
+          </p>
+          <a class="launch" href="labs/realtime-geometry-pathfinding/">Open experiment</a>
+        </div>
+      </article>
+    </section>
+
+    <section class="section" aria-labelledby="howTitle">
+      <div class="section-head">
+        <h2 id="howTitle">What To Look For</h2>
+        <p>The experiment is meant to make the automation behavior visible, with the prototype and preview images kept together.</p>
       </div>
       <div class="explain-grid">
         <div class="explain-copy">
-          <h3>실험의 목적</h3>
+          <h3>Purpose</h3>
           <p>
-            자동화 스크립트, BIM 아이디어, 경로 탐색, 이미지 인식 같은 기능을 정적 웹 페이지로 정리합니다.
-            각 실험은 설명, 실행 화면, 결과 이미지, 배포 링크를 함께 갖고 있어 블로그에서 바로 연결할 수 있습니다.
+            This prototype explores how route options can be generated and compared when a model has blocked zones. It can be read as a lightweight stand-in for circulation, routing, cable, pipe, or layout automation.
           </p>
           <ul class="explain-list">
-            <li>아이디어를 브라우저에서 실행 가능한 형태로 보관</li>
-            <li>이미지와 짧은 설명으로 실험 의도를 빠르게 파악</li>
-            <li>GitHub Pages와 Cloudflare Pages에 연결 가능한 정적 구조</li>
+            <li>Draw start and end points directly on the canvas.</li>
+            <li>Add obstacle shapes or detect obstacles from an image.</li>
+            <li>Compare the shortest path with alternative routing patterns.</li>
           </ul>
         </div>
-        <div class="visual-grid" aria-label="실험 화면 예시">
+        <div class="visual-grid" aria-label="Experiment preview images">
           <figure class="visual">
-            <img src="labs/realtime-geometry-pathfinding/polished-preview.png" alt="장애물 주변으로 경로를 계산하는 자동화 실험 화면">
-            <figcaption>시작점과 도착점 사이의 회피 경로 계산</figcaption>
+            <img src="labs/realtime-geometry-pathfinding/polished-preview.png" alt="Generated path around multiple obstacles">
+            <figcaption>Obstacle-aware route generation</figcaption>
           </figure>
           <figure class="visual">
-            <img src="labs/realtime-geometry-pathfinding/alternative-preview.png" alt="여러 대안 경로를 비교하는 자동화 실험 화면">
-            <figcaption>대안 경로 생성과 비교 화면</figcaption>
+            <img src="labs/realtime-geometry-pathfinding/alternative-preview.png" alt="Alternative routes shown in several colors">
+            <figcaption>Alternative route comparison</figcaption>
           </figure>
         </div>
-      </div>
-    </section>
-
-    <section class="section" id="labs">
-      <div class="section-head">
-        <h2>실행 실험</h2>
-        <p>브라우저에서 바로 동작하는 자동화 프로토타입입니다.</p>
-      </div>
-      <div class="grid">
-        <article class="card">
-          <img src="labs/realtime-geometry-pathfinding/polished-preview.png" alt="Realtime Geometry Pathfinding 실행 미리보기">
-          <div class="card-body">
-            <span class="tag">Canvas Automation</span>
-            <h3>경로 찾기 자동화</h3>
-            <p>시작점, 도착점, 장애물을 캔버스에 배치하고 최단 경로와 대안 패턴을 실시간으로 확인합니다.</p>
-            <a class="launch" href="labs/realtime-geometry-pathfinding/">실험 실행</a>
-          </div>
-        </article>
-      </div>
-    </section>
-
-    <section class="section" id="reports">
-      <div class="section-head">
-        <h2>분석 리포트</h2>
-        <p>영상 분석, 검증 기록, 실험 결과를 함께 보관하는 영역입니다.</p>
-      </div>
-      <div class="grid">
-        <article class="card">
-          <img src="reports/vibe-coding-video-analysis/thumbnail_F5QfQ8ve-zs.webp" alt="바이브 코딩 영상 분석 썸네일">
-          <div class="card-body">
-            <span class="tag report">Video Analysis</span>
-            <h3>바이브 코딩 영상 분석</h3>
-            <p>YouTube 영상의 핵심 주장, 실행 순서, 리스크를 정리한 분석 페이지입니다.</p>
-            <a class="launch" href="reports/vibe-coding-video-analysis/">리포트 보기</a>
-          </div>
-        </article>
-      </div>
-    </section>
-
-    <section class="section" id="deploy">
-      <div class="section-head">
-        <h2>배포 흐름</h2>
-        <p>하나의 정적 폴더를 GitHub 저장소와 Pages 배포의 기준 루트로 사용합니다.</p>
-      </div>
-      <div class="steps">
-        <article class="step">
-          <h3>Git 저장소</h3>
-          <p>실험 파일을 저장소에 추가하고 변경 이력을 남깁니다.</p>
-        </article>
-        <article class="step">
-          <h3>Pages 배포</h3>
-          <p>GitHub Pages 또는 Cloudflare Pages에서 정적 사이트로 공개합니다.</p>
-        </article>
-        <article class="step">
-          <h3>블로그 연결</h3>
-          <p>Blogger 글, 메뉴, 버튼에서 공개 URL로 연결합니다.</p>
-        </article>
-        <article class="step">
-          <h3>실험 확장</h3>
-          <p>새 실험 폴더를 추가하고 루트 페이지의 설명과 이미지를 갱신합니다.</p>
-        </article>
       </div>
     </section>
   </main>

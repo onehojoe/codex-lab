@@ -85,17 +85,17 @@ const IMAGE_COMPONENT_MIN_AREA = 70;
 // Route strategies are intentionally data-driven so new line behaviors can be added here.
 const shortestPathStrategy = {
   id: "shortest",
-  name: "최단 그래프",
+  name: "Shortest Graph",
 };
 
 const shortestRoadPathStrategy = {
   id: "shortest-road",
-  name: "최단 도로선",
+  name: "Shortest Road",
 };
 
 const patternStyles = [
   {
-    name: "곡률 대안",
+    name: "Curved Alternative",
     copies: 3,
     gap: 18,
     amplitude: 12,
@@ -103,7 +103,7 @@ const patternStyles = [
     speed: 0.65,
   },
   {
-    name: "측면 대안",
+    name: "Side Alternative",
     copies: 4,
     gap: 14,
     amplitude: 8,
@@ -111,7 +111,7 @@ const patternStyles = [
     speed: 0.8,
   },
   {
-    name: "완만 대안",
+    name: "Soft Alternative",
     copies: 2,
     gap: 28,
     amplitude: 16,
@@ -123,14 +123,14 @@ const patternStyles = [
 const pathStrategies = [
   {
     id: "straight",
-    name: "직선 수렴",
+    name: "Straight",
     build(start, end) {
       return makePath([start, end]);
     },
   },
   {
     id: "arc",
-    name: "호 궤도",
+    name: "Arc",
     build(start, end, bounds, rng) {
       const mid = midpoint(start, end);
       const normal = unit(perpendicular(vector(start, end)));
@@ -141,7 +141,7 @@ const pathStrategies = [
   },
   {
     id: "dogleg",
-    name: "직교 굴절",
+    name: "Dogleg",
     build(start, end, bounds, rng) {
       const split = lerp(0.28, 0.72, rng());
       const offset = (rng() > 0.5 ? 1 : -1) * (70 + rng() * 140);
@@ -159,7 +159,7 @@ const pathStrategies = [
   },
   {
     id: "wave",
-    name: "파동 추적",
+    name: "Wave",
     build(start, end, bounds, rng) {
       const along = vector(start, end);
       const normal = unit(perpendicular(along));
@@ -183,7 +183,7 @@ const pathStrategies = [
   },
   {
     id: "probe",
-    name: "탐욕 샘플",
+    name: "Probe",
     build(start, end, bounds, rng) {
       const route = [start];
       const probes = [];
@@ -225,7 +225,7 @@ const pathStrategies = [
   },
   {
     id: "orbit",
-    name: "중심 회전",
+    name: "Orbit",
     build(start, end, bounds, rng) {
       const mid = midpoint(start, end);
       const baseRadius = Math.min(180, Math.max(64, distance(start, end) * 0.28));
@@ -273,7 +273,7 @@ function setRouteMode(routeMode) {
   updateStatus();
 }
 
-function clearPatternState(label = "대기") {
+function clearPatternState(label = "Idle") {
   state.pattern = null;
   patternText.textContent = label;
 }
@@ -292,29 +292,29 @@ function updateStatus() {
   const createdCount = state.createdPatterns.length;
 
   if (state.imageRecognizing) {
-    statusText.textContent = "이미지 명도 분석 중";
+    statusText.textContent = "Analyzing image tone";
   } else if (state.activeRun && !state.activeRun.done) {
-    statusText.textContent = `${state.activeRun.routes.length}개 경로 이동 중`;
+    statusText.textContent = `${state.activeRun.routes.length} route${state.activeRun.routes.length === 1 ? "" : "s"} in motion`;
   } else if (state.pattern) {
     const alternativeCount = state.pattern.alternatives?.length || 0;
     const rejectedCount = state.pattern.rejectedCount || 0;
     statusText.textContent =
       alternativeCount > 0
-        ? `${alternativeCount}개 충돌 없는 대안 검토 중${rejectedCount ? ` · ${rejectedCount}개 제외` : ""}`
-        : "충돌 없는 대안을 찾지 못함";
+        ? `${alternativeCount} clear alternative${alternativeCount === 1 ? "" : "s"} ready${rejectedCount ? ` · ${rejectedCount} rejected` : ""}`
+        : "No clear alternatives found";
   } else if (createdCount > 0) {
-    statusText.textContent = `${createdCount}개 대안 확정됨`;
+    statusText.textContent = `${createdCount} committed alternative${createdCount === 1 ? "" : "s"}`;
   } else if (state.mode === "obstacle") {
-    statusText.textContent = `${obstacleLabel(state.obstacleShape)} 장애물 그리기 · ${obstacleCount}개`;
+    statusText.textContent = `Drawing ${obstacleLabel(state.obstacleShape)} obstacles · ${obstacleCount}`;
   } else if (state.mode === "start") {
-    statusText.textContent = `시작점 추가 중 · 시작 ${startCount} / 도착 ${endCount}`;
+    statusText.textContent = `Adding start points · Start ${startCount} / End ${endCount}`;
   } else {
-    statusText.textContent = `도착점 추가 중 · 시작 ${startCount} / 도착 ${endCount}`;
+    statusText.textContent = `Adding end points · Start ${startCount} / End ${endCount}`;
   }
 
   runButton.disabled = !(startCount > 0 && endCount > 0);
   patternButton.disabled = !hasRoutes;
-  patternButton.textContent = state.pattern ? "대안 갱신" : "대안";
+  patternButton.textContent = state.pattern ? "Refresh Alt" : "Alternatives";
   commitPatternButton.disabled = !state.pattern || !(state.pattern.alternatives?.length);
   detectImageButton.disabled = !state.importedImage || state.imageRecognizing;
   countText.textContent = `${startCount} x ${endCount}`;
@@ -346,7 +346,7 @@ function reset() {
   setRouteMode("shortest-road");
   setMode("start");
   attemptText.textContent = "00";
-  strategyText.textContent = "대기";
+  strategyText.textContent = "Idle";
   countText.textContent = "0 x 0";
   obstacleText.textContent = "0";
   distanceText.textContent = "0 px";
@@ -565,8 +565,8 @@ function generatePattern() {
   };
 
   patternText.textContent = alternativeResult.lines.length
-    ? `${alternativeResult.lines.length}개 대안`
-    : "대안 없음";
+    ? `${alternativeResult.lines.length} alt${alternativeResult.lines.length === 1 ? "" : "s"}`
+    : "No alternatives";
   updateStatus();
 }
 
@@ -701,7 +701,7 @@ function commitPattern() {
 
   const lines = snapshotPatternLines(pattern);
   if (lines.length === 0) {
-    patternText.textContent = "대안 없음";
+    patternText.textContent = "No alternatives";
     updateStatus();
     return;
   }
@@ -720,7 +720,7 @@ function commitPattern() {
     state.createdPatterns.shift();
   }
 
-  clearPatternState(`확정 ${String(layer.id).padStart(2, "0")}`);
+  clearPatternState(`Committed ${String(layer.id).padStart(2, "0")}`);
   updateStatus();
 }
 
@@ -1397,13 +1397,13 @@ function obstacleVertices(obstacle) {
 
 function obstacleLabel(shape) {
   const labels = {
-    circle: "원",
-    triangle: "삼각형",
-    square: "사각형",
-    pentagon: "오각형",
-    polygon: "자동",
+    circle: "circle",
+    triangle: "triangle",
+    square: "square",
+    pentagon: "pentagon",
+    polygon: "detected",
   };
-  return labels[shape] || "도형";
+  return labels[shape] || "shape";
 }
 
 function drawGrid() {
