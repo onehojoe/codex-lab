@@ -2,7 +2,8 @@
 ## Title: WowF
 ## Notes: WoW Forever hub - quest / auction price / dungeon info (Phase 0: API probe)
 ## Notes-koKR: 와우 포에버 허브 - 퀘스트 / 경매장 시세 / 던전 정보 (0단계: API 점검)
-## Version: 0.0.1
+## Version: 0.0.2
+## OptionalDeps: Questie
 ## SavedVariables: WowFDB
 
 Core.lua

@@ -155,7 +155,9 @@
 wowf/
   BRIEFING.md          ← 이 문서
   README.md            ← 설치와 테스트 방법
-  WowF/                ← 게임의 AddOns 폴더에 그대로 복사하는 단위
+  installer/
+    WowF-Updater.ps1   ← 게임 PC용 설치·자동 업데이트 도구 (Windows)
+  WowF/                ← 게임의 AddOns 폴더에 설치되는 단위
     WowF.toc
     Core.lua           ← 네임스페이스, SavedVariables, /wowf 명령 분배
     Probe.lua          ← Phase 0 API 점검
@@ -169,16 +171,19 @@ wowf/
 ## 7. 개발·테스트 방식
 
 - 저는 클라우드 컨테이너에서 작업하므로 게임을 실행할 수 없습니다. 여기서 할 수 있는 것은 **Lua 5.1(WoW와 같은 버전)로 문법 검사**하고 **WoW API 스텁으로 로직을 테스트**하는 데까지입니다.
-- 실제 검증은 사용자가 합니다. `WowF` 폴더를 복사하고, `/reload`하고, BugSack(Forever 버전)으로 에러를 잡은 다음, 에러 문구나 `SavedVariables\WowF.lua` 내용을 붙여 넣어 주시면 됩니다.
+- 실제 검증은 사용자가 게임 PC에서 합니다. 제가 GitHub `main`에 버전을 올려 푸시하면, 게임 PC의 설치기가 윈도우 로그인 때나 바탕화면 `WowF 업데이트`를 누를 때 받아서 다시 설치합니다. 게임에서 `/reload`하고, BugSack(Forever 버전)으로 에러를 잡은 다음, 에러 문구나 `SavedVariables\WowF.lua` 내용을 붙여 넣어 주시면 됩니다.
 - 그래서 Phase 0이 probe입니다. 커뮤니티 실측을 사용자 클라이언트의 사실로 바꿔 두면 이후 단계가 재작업 없이 진행됩니다.
 
 ---
 
-## 8. 결정이 필요한 사항
+## 8. 결정 사항 (2026-11-17 확정)
 
-1. **퀘스트:** Questie 연동(권장)과 가벼운 자체 구현(내 퀘스트 로그만, 지도 핀 없음) 중 하나
-2. **배포 범위:** 본인만 쓸지, CurseForge에 공개할지 (공개한다면 GPL-3.0으로 라이선스 확정)
-3. **주 캐릭터의 Ruleset과 진영:** 경매장 시세 키 설계에 반영
+| 항목 | 결정 | 설계에 주는 영향 |
+|---|---|---|
+| 퀘스트 | **Questie 연동** (무료, GPL-3.0) | WowF는 퀘스트 DB를 만들지 않습니다. Questie가 있으면 그 데이터를 읽고, 없으면 퀘스트 기능만 끕니다. `WowF.toc`에 `## OptionalDeps: Questie`를 넣어 Questie가 먼저 로드되게 했습니다 |
+| 배포 | **본인 전용.** CurseForge에 올리지 않음 | 게임 PC의 설치기(`installer/WowF-Updater.ps1`)가 GitHub `main`에서 직접 받아 설치하고 자동 업데이트합니다. 저장소가 공개라서 GPL 코드를 가져올 때는 출처와 라이선스 고지를 남깁니다 |
+| 캐릭터 | **한국 서버 · PvP · 호드** | 시세 DB 키는 `GetRealmName()` + `UnitFactionGroup("player")`입니다. 호드 한 진영만 저장하므로 저장 용량이 절반으로 줄어듭니다. 경매장이 진영 공용인지는 probe와 첫 스캔으로 확인합니다 |
+| 게임 PC | 개발 환경과 다른 PC | 경로 자동 탐지, 버전 비교 후 재설치, 로그인 시 자동 업데이트를 설치기가 맡습니다 |
 
 ---
 
