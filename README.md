@@ -9,6 +9,7 @@ Automation Lab is a focused static site for runnable automation experiments with
 ## Current Contents
 
 - `labs/realtime-geometry-pathfinding/`: canvas-based pathfinding automation experiment
+- `wowf/`: WoW Forever addon project (quest / auction price / dungeon info hub). See `wowf/BRIEFING.md`
 
 ## Local Preview
 
