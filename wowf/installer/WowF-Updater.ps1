@@ -40,6 +40,8 @@ $ProgressPreference = 'SilentlyContinue'   # Windows PowerShell 5.1 다운로드
 
 $Repo          = 'onehojoe/codex-lab'
 $DefaultBranch = 'main'
+# main 에 아직 wowf 가 없을 때 쓰는 예비 브랜치. main 에 합쳐지면 main 이 먼저 잡혀서 쓰이지 않는다.
+$FallbackBranch = 'ccr-5c74c9ea-2op7gw'
 $AddonName     = 'WowF'
 $AddonRelPath  = 'wowf/WowF'
 $UpdaterRel    = 'wowf/installer/WowF-Updater.ps1'
@@ -453,8 +455,11 @@ try {
         if ($Branch) {
             $branches = @($Branch)
         } else {
+            # 순서: main → 지난번에 성공한 브랜치 → 예비 브랜치 (중복 제거)
             $branches = @($DefaultBranch)
-            if ($cfg['Branch'] -and ([string]$cfg['Branch'] -ne $DefaultBranch)) { $branches += [string]$cfg['Branch'] }
+            foreach ($b in @([string]$cfg['Branch'], $FallbackBranch)) {
+                if ($b -and ($branches -notcontains $b)) { $branches += $b }
+            }
         }
         # 윈도우 로그인 직후에는 인터넷이 늦게 붙을 수 있어서 자동 실행 때만 재시도한다.
         $attempts = 1
